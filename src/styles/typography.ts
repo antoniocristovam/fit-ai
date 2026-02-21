@@ -6,6 +6,7 @@ export const FontSize = {
   xl: 20,
   xxl: 24,
   xxxl: 32,
+  display: 48,
 } as const;
 
 export const FontWeight = {
@@ -13,6 +14,7 @@ export const FontWeight = {
   medium: '500',
   semibold: '600',
   bold: '700',
+  black: '900',
 } as const;
 
 export const LineHeight = {

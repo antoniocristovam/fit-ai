@@ -1,15 +1,18 @@
 import { TextProps } from 'react-native';
 
 export type TypographyVariant =
-  | 'heading1'
-  | 'heading2'
-  | 'heading3'
+  | 'display'
+  | 'h1'
+  | 'h2'
+  | 'h3'
   | 'body'
   | 'bodySmall'
   | 'caption'
-  | 'label';
+  | 'label'
+  | 'overline';
 
 export interface TypographyProps extends TextProps {
   variant?: TypographyVariant;
   color?: string;
+  align?: 'left' | 'center' | 'right';
 }

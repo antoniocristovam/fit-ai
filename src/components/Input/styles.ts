@@ -1,34 +1,51 @@
 import { StyleSheet } from 'react-native';
-import { theme } from '../../styles/theme';
+import { Colors } from '../../styles/colors';
+import { BorderRadius, Spacing } from '../../styles/spacing';
+import { FontSize, FontWeight } from '../../styles/typography';
 
 export const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing.xxs,
+    gap: Spacing.xxs,
   },
   label: {
-    fontSize: theme.fontSize.sm,
-    fontWeight: theme.fontWeight.medium,
-    color: theme.colors.text.primary,
+    fontSize: 10,
+    fontWeight: FontWeight.semibold,
+    color: Colors.text.secondary,
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    marginBottom: 2,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.background.input,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    borderColor: Colors.border.default,
+    paddingHorizontal: Spacing.md,
+    height: 54,
+    gap: Spacing.sm,
+  },
+  inputRowFocused: {
+    borderColor: Colors.border.focus,
+  },
+  inputRowError: {
+    borderColor: Colors.border.error,
   },
   input: {
-    borderWidth: 1.5,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.md,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-    fontSize: theme.fontSize.md,
-    color: theme.colors.text.primary,
-    backgroundColor: theme.colors.background.primary,
-  },
-  inputError: {
-    borderColor: theme.colors.feedback.error,
+    flex: 1,
+    fontSize: FontSize.md,
+    color: Colors.text.primary,
+    height: '100%',
   },
   error: {
-    fontSize: theme.fontSize.xs,
-    color: theme.colors.feedback.error,
+    fontSize: FontSize.xs,
+    color: Colors.feedback.error,
+    marginTop: 2,
   },
   hint: {
-    fontSize: theme.fontSize.xs,
-    color: theme.colors.text.secondary,
+    fontSize: FontSize.xs,
+    color: Colors.text.secondary,
+    marginTop: 2,
   },
 });

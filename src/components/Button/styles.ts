@@ -1,28 +1,47 @@
 import { StyleSheet } from 'react-native';
-import { theme } from '../../styles/theme';
+import { Colors } from '../../styles/colors';
+import { BorderRadius, Spacing } from '../../styles/spacing';
+import { FontSize, FontWeight } from '../../styles/typography';
 import { ButtonSize, ButtonVariant } from './types';
 
-export const buttonVariantStyles: Record<ButtonVariant, object> = {
+export const variantStyles: Record<ButtonVariant, object> = {
   primary: {
-    backgroundColor: theme.colors.brand.primary,
+    backgroundColor: Colors.brand.primary,
+    shadowColor: Colors.brand.primary,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 10,
   },
-  secondary: {
+  outline: {
     backgroundColor: 'transparent',
     borderWidth: 1.5,
-    borderColor: theme.colors.brand.primary,
+    borderColor: Colors.brand.primary,
   },
   ghost: {
     backgroundColor: 'transparent',
   },
-  danger: {
-    backgroundColor: theme.colors.feedback.error,
+};
+
+export const sizeStyles: Record<ButtonSize, object> = {
+  sm: {
+    paddingVertical: Spacing.xs,
+    paddingHorizontal: Spacing.md,
+  },
+  md: {
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+  },
+  lg: {
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.xl,
   },
 };
 
-export const buttonSizeStyles: Record<ButtonSize, object> = {
-  sm: { paddingVertical: theme.spacing.xs, paddingHorizontal: theme.spacing.md },
-  md: { paddingVertical: theme.spacing.sm, paddingHorizontal: theme.spacing.lg },
-  lg: { paddingVertical: theme.spacing.md, paddingHorizontal: theme.spacing.xl },
+export const labelVariantStyles: Record<ButtonVariant, object> = {
+  primary: { color: Colors.text.inverse },
+  outline: { color: Colors.brand.primary },
+  ghost: { color: Colors.text.secondary },
 };
 
 export const styles = StyleSheet.create({
@@ -30,23 +49,18 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: theme.borderRadius.md,
-    gap: theme.spacing.xs,
+    borderRadius: BorderRadius.md,
+    gap: Spacing.xs,
   },
   fullWidth: {
     width: '100%',
   },
   label: {
-    fontWeight: theme.fontWeight.semibold,
-    color: theme.colors.text.inverse,
-  },
-  labelSecondary: {
-    color: theme.colors.brand.primary,
-  },
-  labelGhost: {
-    color: theme.colors.brand.primary,
+    fontSize: FontSize.sm,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1.5,
   },
   disabled: {
-    opacity: 0.5,
+    opacity: 0.4,
   },
 });

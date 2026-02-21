@@ -1,45 +1,62 @@
-import { StyleSheet } from 'react-native';
-import { theme } from '../../styles/theme';
+import { Colors } from '../../styles/colors';
+import { FontSize, FontWeight } from '../../styles/typography';
 import { TypographyVariant } from './types';
 
 export const variantStyles: Record<TypographyVariant, object> = {
-  heading1: {
-    fontSize: theme.fontSize.xxxl,
-    fontWeight: theme.fontWeight.bold,
-    color: theme.colors.text.primary,
+  display: {
+    fontSize: FontSize.display,
+    fontWeight: FontWeight.black,
+    color: Colors.text.primary,
+    letterSpacing: -2,
+    lineHeight: 52,
   },
-  heading2: {
-    fontSize: theme.fontSize.xxl,
-    fontWeight: theme.fontWeight.bold,
-    color: theme.colors.text.primary,
+  h1: {
+    fontSize: FontSize.xxxl,
+    fontWeight: FontWeight.bold,
+    color: Colors.text.primary,
+    letterSpacing: -0.8,
+    lineHeight: 40,
   },
-  heading3: {
-    fontSize: theme.fontSize.xl,
-    fontWeight: theme.fontWeight.semibold,
-    color: theme.colors.text.primary,
+  h2: {
+    fontSize: FontSize.xxl,
+    fontWeight: FontWeight.bold,
+    color: Colors.text.primary,
+    letterSpacing: -0.4,
+  },
+  h3: {
+    fontSize: FontSize.xl,
+    fontWeight: FontWeight.semibold,
+    color: Colors.text.primary,
   },
   body: {
-    fontSize: theme.fontSize.md,
-    fontWeight: theme.fontWeight.regular,
-    color: theme.colors.text.primary,
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.regular,
+    color: Colors.text.primary,
+    lineHeight: 24,
   },
   bodySmall: {
-    fontSize: theme.fontSize.sm,
-    fontWeight: theme.fontWeight.regular,
-    color: theme.colors.text.primary,
+    fontSize: FontSize.sm,
+    fontWeight: FontWeight.regular,
+    color: Colors.text.secondary,
+    lineHeight: 20,
   },
   caption: {
-    fontSize: theme.fontSize.xs,
-    fontWeight: theme.fontWeight.regular,
-    color: theme.colors.text.secondary,
+    fontSize: FontSize.xs,
+    fontWeight: FontWeight.regular,
+    color: Colors.text.secondary,
+    lineHeight: 16,
   },
   label: {
-    fontSize: theme.fontSize.sm,
-    fontWeight: theme.fontWeight.medium,
-    color: theme.colors.text.primary,
+    fontSize: FontSize.sm,
+    fontWeight: FontWeight.semibold,
+    color: Colors.text.primary,
+    letterSpacing: 0.2,
+  },
+  overline: {
+    fontSize: 10,
+    fontWeight: FontWeight.semibold,
+    color: Colors.text.secondary,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
   },
 };
-
-export const styles = StyleSheet.create({
-  base: {},
-});

@@ -1,7 +1,7 @@
-import React, { JSX } from 'react';
+import * as React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
-import { theme } from '../../styles/theme';
-import { buttonSizeStyles, buttonVariantStyles, styles } from './styles';
+import { Colors } from '../../styles/colors';
+import { labelVariantStyles, sizeStyles, styles, variantStyles } from './styles';
 import { ButtonProps } from './types';
 
 export function Button({
@@ -20,28 +20,23 @@ export function Button({
     <TouchableOpacity
       style={[
         styles.base,
-        buttonVariantStyles[variant],
-        buttonSizeStyles[size],
+        variantStyles[variant],
+        sizeStyles[size],
         fullWidth && styles.fullWidth,
         isDisabled && styles.disabled,
         style,
       ]}
       disabled={isDisabled}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
       {...rest}
     >
       {loading ? (
-        <ActivityIndicator size="small" color={theme.colors.text.inverse} />
+        <ActivityIndicator
+          size="small"
+          color={variant === 'primary' ? Colors.text.inverse : Colors.brand.primary}
+        />
       ) : (
-        <Text
-          style={[
-            styles.label,
-            variant === 'secondary' && styles.labelSecondary,
-            variant === 'ghost' && styles.labelGhost,
-          ]}
-        >
-          {label}
-        </Text>
+        <Text style={[styles.label, labelVariantStyles[variant]]}>{label}</Text>
       )}
     </TouchableOpacity>
   );

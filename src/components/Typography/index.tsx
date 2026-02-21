@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Text } from 'react-native';
 import { variantStyles } from './styles';
 import { TypographyProps } from './types';
@@ -6,12 +6,18 @@ import { TypographyProps } from './types';
 export function Typography({
   variant = 'body',
   color,
+  align,
   style,
   ...rest
 }: TypographyProps): React.JSX.Element {
   return (
     <Text
-      style={[variantStyles[variant], color ? { color } : null, style]}
+      style={[
+        variantStyles[variant],
+        color ? { color } : null,
+        align ? { textAlign: align } : null,
+        style,
+      ]}
       {...rest}
     />
   );
