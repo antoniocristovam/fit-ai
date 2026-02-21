@@ -1,0 +1,144 @@
+---
+description: "Padrões de componentes: estrutura, design system compartilhado e animações"
+globs:
+  - "src/components/**"
+  - "src/features/**/components/**"
+alwaysApply: false
+---
+
+# Padrões de Componentes — FIT AI
+
+## Estrutura de arquivos
+
+### Componente compartilhado (`src/components/`)
+
+```
+components/Button/
+  index.tsx   ← lógica e JSX
+  styles.ts   ← StyleSheet.create (nunca inline)
+  types.ts    ← interfaces e types exportados
+```
+
+### Sub-componente de tela (`src/features/.../screens/ScreenName/components/`)
+
+```
+HomeScreen/components/StatGrid/
+  index.tsx   ← lógica e JSX
+  styles.ts   ← estilos (sem types.ts se simples)
+```
+
+Sub-componentes de tela **não são exportados** para fora da tela — são exclusivos do contexto.
+
+---
+
+## Componentes compartilhados disponíveis
+
+### `<Button />`
+
+```tsx
+<Button
+  label="ENTRAR"
+  variant="primary"   // 'primary' | 'outline' | 'ghost'
+  size="lg"           // 'sm' | 'md' | 'lg'
+  fullWidth
+  loading={false}
+  onPress={handler}
+  style={styles.customBtn}  // aceita override
+/>
+```
+
+`variant="primary"` já inclui glow verde. Para amplificar, use `style` com `shadowOpacity` maior.
+
+### `<Input />`
+
+```tsx
+<Input
+  label="E-mail"
+  placeholder="seu@email.com"
+  keyboardType="email-address"
+  autoCapitalize="none"
+  error="Campo obrigatório"
+  leftIcon={<IconComponent />}
+  rightAccessory={<TouchableOpacity>...</TouchableOpacity>}
+  value={value}
+  onChangeText={setValue}
+/>
+```
+
+Gerencia estado de foco internamente (borda neon no focus). `leftIcon` e `rightAccessory` aceitam qualquer ReactNode.
+
+### `<Typography />`
+
+```tsx
+<Typography variant="h1">Título</Typography>
+<Typography variant="overline" color={Colors.brand.primary}>LABEL</Typography>
+// variants: display | h1 | h2 | h3 | body | bodySmall | caption | label | overline
+```
+
+---
+
+## Regras de componentes
+
+```tsx
+// ❌ Estilos inline
+<View style={{ backgroundColor: '#B5FF4D', padding: 16 }} />
+
+// ✅ StyleSheet.create
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.brand.primary,
+    padding: Spacing.md,
+  },
+});
+```
+
+- Sem lógica condicional complexa no JSX (extrair para funções ou hooks)
+- Props tipadas com `interface`, nunca `any`
+- Componentes privados da tela ficam no mesmo arquivo ou em `components/` da tela
+
+---
+
+## Animações com Animated API
+
+Sempre usar `useNativeDriver: true` para `opacity` e `transform`. Nunca para `width`, `height` ou `backgroundColor`.
+
+### Padrão: glow pulsante (usado em CTAs)
+
+```tsx
+const glowOpacity = useRef(new Animated.Value(0.35)).current;
+
+useEffect(() => {
+  Animated.loop(
+    Animated.sequence([
+      Animated.timing(glowOpacity, { toValue: 0.9, duration: 1400, useNativeDriver: true }),
+      Animated.timing(glowOpacity, { toValue: 0.35, duration: 1400, useNativeDriver: true }),
+    ]),
+  ).start();
+}, [glowOpacity]);
+
+// JSX: glow posicionado ANTES do elemento principal (z-order abaixo)
+<View style={styles.ctaWrapper}>
+  <Animated.View pointerEvents="none" style={[styles.ctaGlow, { opacity: glowOpacity }]} />
+  <Button label="INICIAR" variant="primary" size="lg" fullWidth />
+</View>
+```
+
+### Padrão: scale no press
+
+```tsx
+const scale = useRef(new Animated.Value(1)).current;
+const onPressIn = () => Animated.spring(scale, { toValue: 0.96, useNativeDriver: true }).start();
+const onPressOut = () => Animated.spring(scale, { toValue: 1, useNativeDriver: true }).start();
+```
+
+---
+
+## Ícones sem biblioteca externa
+
+O projeto não usa biblioteca de ícones. Alternativas:
+
+1. **View geométrico** — formas simples com `borderRadius`, `borderWidth`, `transform`
+2. **Texto Unicode** — `›` (chevron), `↑ ↓` (trends), símbolo `◆` para decoração
+3. **Texto funcional** — `MOSTRAR / OCULTAR` para toggle de senha
+
+Nunca usar emoji como ícone de interface.

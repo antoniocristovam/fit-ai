@@ -1,0 +1,150 @@
+---
+description: "Padrões de telas: layout, StatusBar, teclado, ScrollView e mock data"
+globs:
+  - "src/features/**/screens/**"
+alwaysApply: false
+---
+
+# Padrões de Telas — FIT AI
+
+## Estrutura de uma tela
+
+```
+features/home/screens/HomeScreen/
+  index.tsx     ← composição dos componentes
+  styles.ts     ← estilos da tela (root, scrollContent, seções)
+  mock.ts       ← interfaces + dados simulados (antes de conectar API)
+  components/   ← sub-componentes exclusivos desta tela
+```
+
+`mock.ts` deve conter:
+- **Interfaces/types** de dados da tela (`WeekDay`, `StatData`, `AlertData`…)
+- **Constantes de mock** prefixadas com `MOCK_` (`MOCK_STATS`, `MOCK_WEEK_DAYS`…)
+- Nenhuma lógica de negócio
+
+---
+
+## Template de tela scrollável
+
+```tsx
+export function MyScreen(): React.JSX.Element {
+  return (
+    <View style={styles.root}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+
+      {/* Orb decorativo — sempre pointerEvents="none" */}
+      <View style={styles.bgOrb} pointerEvents="none" />
+
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        bounces
+      >
+        {/* seções aqui */}
+      </ScrollView>
+    </View>
+  );
+}
+```
+
+### Estilos base obrigatórios
+
+```ts
+root: {
+  flex: 1,
+  backgroundColor: Colors.background.primary, // #0A0A0A
+},
+scrollContent: {
+  paddingHorizontal: Spacing.lg,    // 24px
+  paddingTop: Spacing.xxl + Spacing.xl,  // ~80px (espaço para status bar)
+  paddingBottom: Spacing.xxxl,      // 64px (espaço de respiro inferior)
+  gap: Spacing.xxl,                 // 48px entre seções
+},
+```
+
+---
+
+## Telas com teclado (login, forms)
+
+```tsx
+<View style={styles.root}>
+  <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+  <View style={styles.bgOrbTop} pointerEvents="none" />
+
+  <KeyboardAvoidingView
+    style={styles.keyboardView}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
+    <ScrollView
+      contentContainerStyle={styles.scrollContent}
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+      bounces={false}
+    >
+      {/* conteúdo */}
+    </ScrollView>
+  </KeyboardAvoidingView>
+</View>
+```
+
+- `bounces={false}` em telas de formulário (evita comportamento visual estranho com teclado)
+- `keyboardShouldPersistTaps="handled"` sempre que houver inputs
+
+---
+
+## StatusBar
+
+Todas as telas usam:
+
+```tsx
+<StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+```
+
+- `translucent` para tela de fundo se estender abaixo da status bar (imersão total)
+- `barStyle="light-content"` porque o fundo é sempre escuro
+
+---
+
+## Seções da Dashboard (HomeScreen)
+
+Ordem estabelecida:
+1. `DashboardHeader` — logo, saudação, ações
+2. `WeeklyTracker` — rastreador semanal
+3. `TodayWorkoutCard` — card em destaque com CTA
+4. `StatGrid` — grade 2×2 de estatísticas
+5. `AlertsFeed` — alertas e metas
+
+Cada seção é um componente independente recebendo dados por props.
+
+---
+
+## Labels de seção
+
+Padrão visual para títulos de seção dentro da dashboard:
+
+```ts
+sectionLabel: {
+  fontSize: FontSize.xs,        // 11px
+  fontWeight: FontWeight.bold,
+  color: Colors.text.secondary,
+  letterSpacing: 2.5,
+  // NÃO usar textTransform: 'uppercase' — escrever em maiúsculas diretamente
+},
+```
+
+Exemplos: `"ESTA SEMANA"`, `"ESTATÍSTICAS"`, `"ALERTAS E METAS"`
+
+---
+
+## Inputs com textContentType
+
+Para ativar autofill do sistema operacional:
+
+```tsx
+// Email
+<Input keyboardType="email-address" autoCapitalize="none"
+       autoComplete="email" textContentType="emailAddress" />
+
+// Senha
+<Input secureTextEntry autoComplete="password" textContentType="password" />
+```

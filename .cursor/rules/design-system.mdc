@@ -1,0 +1,149 @@
+---
+description: "Design system: tokens de cor, tipografia, espaçamento e linguagem visual do FIT AI"
+globs:
+  - "src/**/*.ts"
+  - "src/**/*.tsx"
+alwaysApply: true
+---
+
+# Design System — FIT AI
+
+## Fonte da verdade
+
+Todos os valores visuais vêm exclusivamente de `src/styles/`:
+
+```ts
+import { Colors }                    from 'src/styles/colors';
+import { Spacing, BorderRadius }     from 'src/styles/spacing';
+import { FontSize, FontWeight, LineHeight } from 'src/styles/typography';
+import { theme }                     from 'src/styles/theme';
+```
+
+Nunca usar valores mágicos repetidos (ex: `'#B5FF4D'`, `16`, `'700'` diretamente nos estilos).
+
+---
+
+## Paleta de Cores
+
+| Token | Valor | Uso |
+|---|---|---|
+| `Colors.brand.primary` | `#B5FF4D` | CTAs, destaques, glow principal |
+| `Colors.brand.primaryMuted` | `rgba(181,255,77,0.08)` | Fundos de elementos com acento |
+| `Colors.brand.primaryGlow` | `rgba(181,255,77,0.18)` | Halos e glows suaves |
+| `Colors.background.primary` | `#0A0A0A` | Fundo de telas |
+| `Colors.background.secondary` | `#111111` | Cards de formulário |
+| `Colors.background.card` | `#161616` | Cards de conteúdo |
+| `Colors.background.input` | `#1C1C1E` | Campos de input |
+| `Colors.border.default` | `#2C2C2E` | Bordas padrão |
+| `Colors.border.focus` | `#B5FF4D` | Borda em foco |
+| `Colors.text.primary` | `#FFFFFF` | Texto principal |
+| `Colors.text.secondary` | `#8E8E93` | Texto secundário |
+| `Colors.text.tertiary` | `#3A3A3C` | Texto desabilitado / labels |
+| `Colors.feedback.error` | `#FF453A` | Erros e faltas |
+| `Colors.feedback.warning` | `#FFD60A` | Lembretes |
+| `Colors.feedback.info` | `#0A84FF` | Informações |
+
+---
+
+## Tipografia
+
+```ts
+FontSize:  { xs:11, sm:13, md:15, lg:17, xl:20, xxl:24, xxxl:32, display:48 }
+FontWeight:{ regular:'400', medium:'500', semibold:'600', bold:'700', black:'900' }
+```
+
+Hierarquia visual obrigatória:
+- Títulos de tela → `display` + `black` + alto `letterSpacing`
+- Títulos de seção → `overline` (10px, uppercase, letterSpacing: 2.5)
+- Labels de stat → 9px, `bold`, `letterSpacing: 1.5`, uppercase
+- Corpo → `md` + `regular`
+
+---
+
+## Espaçamento e Raios
+
+```ts
+Spacing:     { xxs:4, xs:8, sm:12, md:16, lg:24, xl:32, xxl:48, xxxl:64 }
+BorderRadius:{ sm:4, md:8, lg:12, xl:16, full:9999 }
+```
+
+Cards de conteúdo usam `borderRadius: 24` (fora do enum — valor fixo justificado para cards premium).
+
+---
+
+## Linguagem Visual — Dark Premium
+
+### Glow em elementos-chave
+
+```ts
+// Botão primário com glow
+shadowColor: Colors.brand.primary,
+shadowOffset: { width: 0, height: 8 },
+shadowOpacity: 0.55,
+shadowRadius: 24,
+elevation: 16,  // Android
+```
+
+### Card com highlight sutil no topo
+
+```tsx
+// Linha de 1px na cor brand posicionada no topo interno do card
+<View style={styles.cardHighlight} />
+
+cardHighlight: {
+  position: 'absolute', top: 0,
+  left: Spacing.xl, right: Spacing.xl,
+  height: 1,
+  backgroundColor: Colors.brand.primary,
+  opacity: 0.2,
+  borderRadius: BorderRadius.full,
+},
+```
+
+### Orbs decorativos de fundo
+
+```ts
+// Posição absoluta, fora do fluxo, sempre com pointerEvents="none"
+bgOrb: {
+  position: 'absolute',
+  borderRadius: 9999,
+  backgroundColor: Colors.brand.primaryMuted,
+  shadowColor: Colors.brand.primary,
+  shadowOpacity: 0.15,
+  shadowRadius: 80,
+},
+```
+
+### Logomarca diamante (identidade da marca)
+
+```tsx
+// Quadrado rotacionado 45°, letra "F" contra-rotacionada
+<View style={styles.logoDiamond}>
+  <Text style={styles.logoLetter}>F</Text>
+</View>
+
+logoDiamond: {
+  transform: [{ rotate: '45deg' }],
+  borderWidth: 2,
+  borderColor: Colors.brand.primary,
+  backgroundColor: Colors.brand.primaryMuted,
+},
+logoLetter: {
+  transform: [{ rotate: '-45deg' }],
+  fontWeight: FontWeight.black,
+  color: Colors.brand.primary,
+  includeFontPadding: false,
+},
+```
+
+Usar o mesmo padrão em todas as telas para manter coesão visual.
+
+---
+
+## Regras visuais
+
+- Dark theme **obrigatório** em todas as telas
+- Nunca usar branco puro como fundo
+- Destaques e CTAs sempre em `Colors.brand.primary`
+- Sombras negras (`#000`) para profundidade, sombras brand para glow
+- `letterSpacing` alto em labels uppercase (mínimo 1.5)

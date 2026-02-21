@@ -1,108 +1,117 @@
 ---
-description: "Standards and architecture rules for React Native + TypeScript mobile application"
+description: "Arquitetura, TypeScript, naming e qualidade do projeto React Native"
 globs:
   - "src/**/*.ts"
   - "src/**/*.tsx"
-alwaysApply: false
+  - "App.tsx"
+alwaysApply: true
 ---
 
-# React Native + TypeScript Project Standards
+# Arquitetura e Padrões — FIT AI
 
 ## Stack
 
-- React Native
-- TypeScript obrigatório
-- Functional Components apenas
-- React Hooks para estado
+- React Native 0.81 + Expo 54
+- TypeScript obrigatório (sem `any`, sem `as unknown as`)
+- Functional Components + Hooks (sem classes)
 - React Navigation para navegação
 
 ---
 
-## Architecture
+## Estrutura de Pastas
 
-- Estrutura baseada em features:
-
+```
 src/
-  features/
-    auth/
-    home/
-  components/
-  hooks/
-  services/
-  navigation/
-  styles/
+├── app/providers/          # Providers globais (theme, auth)
+├── navigation/             # RootNavigator, AuthNavigator, AppNavigator
+├── features/               # Módulos de domínio (feature-first)
+│   ├── auth/
+│   │   ├── screens/LoginScreen/
+│   │   │   ├── index.tsx
+│   │   │   └── styles.ts
+│   │   └── types.ts
+│   ├── home/
+│   │   └── screens/HomeScreen/
+│   │       ├── index.tsx
+│   │       ├── styles.ts
+│   │       ├── mock.ts          # Interfaces + dados simulados da tela
+│   │       └── components/      # Sub-componentes exclusivos da tela
+│   │           └── ComponentName/
+│   │               ├── index.tsx
+│   │               └── styles.ts
+│   ├── workout/
+│   ├── nutrition/
+│   └── ai-coach/
+├── components/             # Design system compartilhado
+│   ├── Button/  (index.tsx · styles.ts · types.ts)
+│   ├── Input/
+│   └── Typography/
+├── hooks/                  # Hooks utilitários globais
+├── services/api/           # HTTP client + endpoints
+├── services/storage/       # AsyncStorage wrapper
+├── store/                  # Estado global
+├── styles/                 # Design tokens (fonte da verdade)
+│   ├── theme.ts · colors.ts · typography.ts · spacing.ts
+├── types/                  # navigation.ts · common.ts
+└── utils/                  # formatters.ts · validators.ts
+```
 
-- Lógica de negócio nunca deve ficar dentro do componente.
-- Regras de negócio devem ir para:
-  - services/
-  - hooks customizados
+### Regras de importação
+- `features/` importa de: `components/`, `hooks/`, `services/`, `store/`, `styles/`, `types/`, `utils/`
+- `features/` **NÃO** importa de outras `features/`
+- `components/` compartilhados **NÃO** importam de `features/`
 
 ---
 
 ## TypeScript
 
-- Nunca usar `any`
-- Sempre tipar props
-- Sempre tipar retorno de funções públicas
-- Preferir `interface` para objetos
-- Não usar `as unknown as`
-- Não ignorar erros de tipo
+```ts
+// ❌ NUNCA
+function handler(data: any) { ... }
+const x = value as unknown as SomeType;
 
----
+// ✅ SEMPRE
+function handler(data: WorkoutData): void { ... }
+interface WorkoutData { id: string; name: string; }
+```
 
-## Components
-
-- Um componente deve ter apenas uma responsabilidade
-- Separar styles em `styles.ts`
-- Evitar lógica condicional complexa no JSX
-- Não usar estilos inline (usar StyleSheet.create)
-
-Estrutura padrão:
-
-components/Button/
-  index.tsx
-  styles.ts
-  types.ts
+- Preferir `interface` para objetos, `type` para unions/aliases
+- Sempre tipar props e retorno de funções públicas
+- Usar `enum` para estados fixos e constantes
 
 ---
 
 ## Naming Conventions
 
-- Componentes: PascalCase
-- Hooks: useSomething
-- Funções: camelCase
-- Interfaces e Types: PascalCase
-- Arquivos de componente: PascalCase.tsx
+| Contexto | Padrão | Exemplo |
+|---|---|---|
+| Componentes | PascalCase | `TodayWorkoutCard` |
+| Hooks | camelCase com `use` | `useDebounce` |
+| Funções/variáveis | camelCase | `getGreeting` |
+| Interfaces/Types | PascalCase | `WorkoutData` |
+| Arquivos de componente | PascalCase | `Button/index.tsx` |
+| Mock/dados locais | SCREAMING_SNAKE | `MOCK_WEEK_DAYS` |
 
 ---
 
-## State Management
+## Qualidade
 
-- Preferir useState + useContext
-- Criar hooks customizados para lógica reutilizável
-- Não adicionar Redux sem justificativa clara
-
----
-
-## Styling
-
-- Usar StyleSheet.create
-- Cores devem vir de src/styles/theme.ts
-- Não usar valores mágicos repetidos
+- Remover `console.log` antes de finalizar
+- Sem código comentado
+- Funções com no máximo ~40 linhas
+- Arquivos com no máximo ~300 linhas
+- Um componente = uma responsabilidade
 
 ---
 
-## Code Quality
+## Git
 
-- Remover console.log antes de finalizar código
-- Não deixar código comentado
-- Evitar funções com mais de 40 linhas
-- Evitar arquivos com mais de 300 linhas
+```
+feat: adiciona tela de dashboard
+fix: corrige layout do WeeklyTracker
+refactor: extrai StatCard para componente separado
+style: ajusta espaçamento do DashboardHeader
+chore: atualiza dependências do Expo
+```
 
----
-
-## Testing
-
-- Usar Jest + React Native Testing Library
-- Componentes críticos devem ter teste de render
-- Testar interações principais
+Branches: `feature/nome-da-feature` · `fix/nome-do-bug`
