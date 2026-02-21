@@ -12,23 +12,73 @@
 ## File Structure
 
 - Todos os arquivos devem ser `.ts` ou `.tsx`
-- Componentes devem ter pasta própria:
+- Arquitetura baseada em Feature-Sliced Design + Clean Architecture
 
+```
 src/
-  components/
-    Button/
-      index.tsx
-      styles.ts
-      types.ts (opcional)
+├── app/
+│   └── providers/        # Providers globais (theme, auth, store)
+│       └── index.tsx
+│
+├── navigation/           # Stacks e tabs de navegação
+│   ├── index.tsx
+│   ├── RootNavigator.tsx
+│   ├── AuthNavigator.tsx
+│   └── AppNavigator.tsx
+│
+├── features/             # Módulos de domínio (feature-first)
+│   ├── auth/
+│   │   ├── components/   # Componentes exclusivos da feature
+│   │   ├── hooks/        # Hooks exclusivos da feature
+│   │   ├── screens/      # Telas da feature
+│   │   ├── services/     # Chamadas de API da feature
+│   │   └── types.ts
+│   ├── workout/
+│   ├── nutrition/
+│   └── ai-coach/
+│
+├── components/           # Componentes compartilhados (design system)
+│   ├── Button/
+│   │   ├── index.tsx
+│   │   ├── styles.ts
+│   │   └── types.ts
+│   ├── Input/
+│   ├── Typography/
+│   ├── Card/
+│   └── Layout/
+│
+├── hooks/                # Hooks utilitários compartilhados
+│
+├── services/             # Serviços externos
+│   ├── api/
+│   │   ├── client.ts     # HTTP client
+│   │   └── endpoints.ts  # Endpoints centralizados
+│   └── storage/
+│       └── index.ts      # AsyncStorage wrapper
+│
+├── store/                # Gerenciamento de estado global
+│   ├── index.ts
+│   └── slices/
+│
+├── styles/               # Design tokens e tema global
+│   ├── theme.ts          # Tema consolidado (fonte da verdade)
+│   ├── colors.ts
+│   ├── typography.ts
+│   └── spacing.ts
+│
+├── types/                # Tipos globais TypeScript
+│   ├── navigation.ts
+│   └── common.ts
+│
+└── utils/                # Funções utilitárias puras
+    ├── formatters.ts
+    └── validators.ts
+```
 
-- Navegação deve ficar em:
-src/navigation/
-
-- Hooks devem ficar em:
-src/hooks/
-
-- Estilos globais em:
-src/styles/theme.ts
+**Regras de importação:**
+- `features/` só importa de `components/`, `hooks/`, `services/`, `store/`, `styles/`, `types/`, `utils/`
+- `features/` NÃO importa de outras `features/` (evitar acoplamento)
+- `components/` compartilhados NÃO importam de `features/`
 
 ---
 
