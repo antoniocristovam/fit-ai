@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { HomeScreen } from './src/features/home/screens/HomeScreen';
+import { WorkoutScreen } from './src/features/workout/screens/WorkoutScreen';
 
 export default function App(): React.JSX.Element {
-  return <HomeScreen />;
+  return <WorkoutScreen />;
 }
