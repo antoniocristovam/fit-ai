@@ -1,0 +1,108 @@
+---
+description: "Standards and architecture rules for React Native + TypeScript mobile application"
+globs:
+  - "src/**/*.ts"
+  - "src/**/*.tsx"
+alwaysApply: false
+---
+
+# React Native + TypeScript Project Standards
+
+## Stack
+
+- React Native
+- TypeScript obrigatório
+- Functional Components apenas
+- React Hooks para estado
+- React Navigation para navegação
+
+---
+
+## Architecture
+
+- Estrutura baseada em features:
+
+src/
+  features/
+    auth/
+    home/
+  components/
+  hooks/
+  services/
+  navigation/
+  styles/
+
+- Lógica de negócio nunca deve ficar dentro do componente.
+- Regras de negócio devem ir para:
+  - services/
+  - hooks customizados
+
+---
+
+## TypeScript
+
+- Nunca usar `any`
+- Sempre tipar props
+- Sempre tipar retorno de funções públicas
+- Preferir `interface` para objetos
+- Não usar `as unknown as`
+- Não ignorar erros de tipo
+
+---
+
+## Components
+
+- Um componente deve ter apenas uma responsabilidade
+- Separar styles em `styles.ts`
+- Evitar lógica condicional complexa no JSX
+- Não usar estilos inline (usar StyleSheet.create)
+
+Estrutura padrão:
+
+components/Button/
+  index.tsx
+  styles.ts
+  types.ts
+
+---
+
+## Naming Conventions
+
+- Componentes: PascalCase
+- Hooks: useSomething
+- Funções: camelCase
+- Interfaces e Types: PascalCase
+- Arquivos de componente: PascalCase.tsx
+
+---
+
+## State Management
+
+- Preferir useState + useContext
+- Criar hooks customizados para lógica reutilizável
+- Não adicionar Redux sem justificativa clara
+
+---
+
+## Styling
+
+- Usar StyleSheet.create
+- Cores devem vir de src/styles/theme.ts
+- Não usar valores mágicos repetidos
+
+---
+
+## Code Quality
+
+- Remover console.log antes de finalizar código
+- Não deixar código comentado
+- Evitar funções com mais de 40 linhas
+- Evitar arquivos com mais de 300 linhas
+
+---
+
+## Testing
+
+- Usar Jest + React Native Testing Library
+- Componentes críticos devem ter teste de render
+- Testar interações principais
