@@ -2,22 +2,22 @@
   "name": "workout-execution-feature",
   "description": "Dependências necessárias para o feature de execução de treino",
   "dependencies": {
-    "expo-av": "~14.0.0",
+    "expo-video": "~55.0.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "react-native-safe-area-context": "^4.7.4",
     "react-native-screens": "^3.27.0"
   },
   "notes": {
-    "expo-av": "Para reprodução de vídeo e áudio",
+    "expo-video": "Para reprodução de vídeo (substitui expo-av deprecated)",
     "@react-navigation/native": "Navegação entre telas",
     "@react-navigation/native-stack": "Stack navigator nativo",
     "react-native-safe-area-context": "Suporte a safe areas (notch, etc)",
     "react-native-screens": "Performance otimizada de navegação"
   },
   "installCommand": {
-    "npm": "npm install expo-av @react-navigation/native @react-navigation/native-stack react-native-safe-area-context react-native-screens",
-    "yarn": "yarn add expo-av @react-navigation/native @react-navigation/native-stack react-native-safe-area-context react-native-screens",
-    "expo": "npx expo install expo-av react-native-safe-area-context react-native-screens && npm install @react-navigation/native @react-navigation/native-stack"
+    "npm": "npm install expo-video @react-navigation/native @react-navigation/native-stack react-native-safe-area-context react-native-screens",
+    "yarn": "yarn add expo-video @react-navigation/native @react-navigation/native-stack react-native-safe-area-context react-native-screens",
+    "expo": "npx expo install expo-video react-native-safe-area-context react-native-screens && npm install @react-navigation/native @react-navigation/native-stack"
   }
 }

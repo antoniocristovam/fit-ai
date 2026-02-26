@@ -4,7 +4,7 @@
 
 Todas as dependências foram instaladas com sucesso:
 
-- ✅ `expo-av` (vídeos e áudio)
+- ✅ `expo-video` (vídeos - substitui expo-av deprecated)
 - ✅ `@react-navigation/native` (navegação)
 - ✅ `@react-navigation/native-stack` (stack navigator)
 - ✅ `react-native-screens` (performance)

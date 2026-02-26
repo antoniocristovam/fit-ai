@@ -6,7 +6,7 @@ import {
   Dimensions,
   ImageSourcePropType,
 } from "react-native";
-import { Video, ResizeMode } from "expo-av";
+import { VideoView, useVideoPlayer } from "expo-video";
 import { ExerciseMedia } from "../../types";
 import { Colors } from "../../../../styles/colors";
 import { BorderRadius } from "../../../../styles/spacing";
@@ -27,7 +27,14 @@ export const ExercisePreview: React.FC<ExercisePreviewProps> = ({
   media,
   fallbackImage,
 }) => {
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const videoPlayer = useVideoPlayer(
+    media?.type === "video" ? media.url : "",
+    (player) => {
+      player.loop = true;
+      player.muted = false;
+      player.play();
+    },
+  );
 
   const renderContent = () => {
     if (!media && !fallbackImage) {
@@ -47,14 +54,11 @@ export const ExercisePreview: React.FC<ExercisePreviewProps> = ({
     switch (media?.type) {
       case "video":
         return (
-          <Video
-            source={{ uri: media.url }}
+          <VideoView
+            player={videoPlayer}
             style={styles.media}
-            resizeMode={ResizeMode.COVER}
-            shouldPlay
-            isLooping
-            isMuted={false}
-            onReadyForDisplay={() => setIsVideoReady(true)}
+            contentFit="cover"
+            nativeControls={false}
           />
         );
 
