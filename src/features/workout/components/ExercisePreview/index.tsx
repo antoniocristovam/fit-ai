@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   Image,
@@ -6,7 +6,6 @@ import {
   Dimensions,
   ImageSourcePropType,
 } from "react-native";
-import { VideoView, useVideoPlayer } from "expo-video";
 import { ExerciseMedia } from "../../types";
 import { Colors } from "../../../../styles/colors";
 import { BorderRadius } from "../../../../styles/spacing";
@@ -22,24 +21,12 @@ const PREVIEW_HEIGHT = SCREEN_WIDTH * 0.75;
 /**
  * ExercisePreview Component
  * Displays exercise media (image, GIF, or video) with premium styling
+ * NOTE: Video playback replaced with static images due to expo-video compatibility issues
  */
 export const ExercisePreview: React.FC<ExercisePreviewProps> = ({
   media,
   fallbackImage,
 }) => {
-  // Only create video player if media is actually a video
-  const videoSource = media?.type === "video" ? media.url : null;
-  const videoPlayer = useVideoPlayer(videoSource || "");
-
-  // Configure player after creation to avoid serialization issues
-  useEffect(() => {
-    if (videoPlayer && videoSource) {
-      videoPlayer.loop = true;
-      videoPlayer.muted = false;
-      videoPlayer.play();
-    }
-  }, [videoPlayer, videoSource]);
-
   const renderContent = () => {
     if (!media && !fallbackImage) {
       return (
@@ -55,27 +42,20 @@ export const ExercisePreview: React.FC<ExercisePreviewProps> = ({
       );
     }
 
-    switch (media?.type) {
-      case "video":
-        return (
-          <VideoView
-            player={videoPlayer}
-            style={styles.media}
-            contentFit="cover"
-          />
-        );
+    // For all media types (video, gif, image), use Image component
+    // Videos will show thumbnail if available, otherwise the URL
+    const imageUri =
+      media?.type === "video"
+        ? media.thumbnail || media.url // Use thumbnail for videos
+        : media?.url;
 
-      case "gif":
-      case "image":
-      default:
-        return (
-          <Image
-            source={{ uri: media?.url }}
-            style={styles.media}
-            resizeMode="cover"
-          />
-        );
-    }
+    return (
+      <Image
+        source={{ uri: imageUri }}
+        style={styles.media}
+        resizeMode="cover"
+      />
+    );
   };
 
   return (
