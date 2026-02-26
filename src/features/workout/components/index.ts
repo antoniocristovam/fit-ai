@@ -1,4 +1,4 @@
-export { ExercisePreview } from "./ExercisePreview";
+export { ExercisePreview } from "./ExercisePreview/index.fallback";
 export { ExerciseInfo } from "./ExerciseInfo";
 export { RestTimer } from "./RestTimer";
 export { ProgressIndicator } from "./ProgressIndicator";
