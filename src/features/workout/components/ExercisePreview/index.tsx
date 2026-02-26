@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Image,
@@ -29,13 +29,16 @@ export const ExercisePreview: React.FC<ExercisePreviewProps> = ({
 }) => {
   // Only create video player if media is actually a video
   const videoSource = media?.type === "video" ? media.url : null;
-  const videoPlayer = useVideoPlayer(videoSource || "", (player) => {
-    if (videoSource) {
-      player.loop = true;
-      player.muted = false;
-      player.play();
+  const videoPlayer = useVideoPlayer(videoSource || "");
+
+  // Configure player after creation to avoid serialization issues
+  useEffect(() => {
+    if (videoPlayer && videoSource) {
+      videoPlayer.loop = true;
+      videoPlayer.muted = false;
+      videoPlayer.play();
     }
-  });
+  }, [videoPlayer, videoSource]);
 
   const renderContent = () => {
     if (!media && !fallbackImage) {

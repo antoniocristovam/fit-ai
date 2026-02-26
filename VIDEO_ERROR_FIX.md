@@ -6,40 +6,50 @@
 ERROR  [Error: Exception in HostFunction: TypeError: expected dynamic type 'boolean', but had type 'string']
 ```
 
-## ✅ Correção Aplicada
+**Fontes:**
 
-### Mudança 1: Removida prop problemática
+- https://github.com/software-mansion/react-native-screens/issues/3470
+- https://stackoverflow.com/questions/79143444/error-exception-in-hostfunction-typeerror-expected-dynamic-type-boolean-bu
 
-```tsx
-// ❌ ANTES - Causava erro
-<VideoView
-  player={videoPlayer}
-  style={styles.media}
-  contentFit="cover"
-  nativeControls={false}  // ← Esta prop causava o erro
-/>
+## 🎯 Causa Raiz
 
-// ✅ AGORA - Funcionando
-<VideoView
-  player={videoPlayer}
-  style={styles.media}
-  contentFit="cover"
-/>
-```
+O erro ocorre quando propriedades booleanas são definidas diretamente no callback do `useVideoPlayer`. Isso causa problemas de serialização entre JavaScript e Native, onde booleans são interpretados incorretamente como strings.
 
-### Mudança 2: Melhor controle do videoPlayer
+## ✅ Solução Aplicada
+
+### Problema: Definir props no callback
 
 ```tsx
-// Agora só cria o player quando realmente há um vídeo
-const videoSource = media?.type === "video" ? media.url : null;
+// ❌ CAUSA ERRO - Serialização incorreta
 const videoPlayer = useVideoPlayer(videoSource || "", (player) => {
   if (videoSource) {
-    player.loop = true;
-    player.muted = false;
+    player.loop = true; // ← Boolean serializado como string
+    player.muted = false; // ← Boolean serializado como string
     player.play();
   }
 });
 ```
+
+### Solução: Usar useEffect
+
+```tsx
+// ✅ CORRETO - Configuração após criação
+const videoPlayer = useVideoPlayer(videoSource || "");
+
+useEffect(() => {
+  if (videoPlayer && videoSource) {
+    videoPlayer.loop = true;
+    videoPlayer.muted = false;
+    videoPlayer.play();
+  }
+}, [videoPlayer, videoSource]);
+```
+
+**Por que funciona:**
+
+- O player é criado sem callback
+- Propriedades são definidas no useEffect, após o player estar completamente inicializado
+- Evita problemas de serialização na ponte JS-Native
 
 ## 🚀 Testando a Correção
 
