@@ -1,6 +1,10 @@
+import { Workout } from "../features/workout/types";
+
 export type RootStackParamList = {
   Auth: undefined;
-  App: undefined;
+  Home: undefined;
+  WorkoutExecution: { workout: Workout };
+  WorkoutComplete: { workoutId: string; duration: number };
 };
 
 export type AuthStackParamList = {

@@ -1,25 +1,43 @@
-import React from 'react';
-import { ScrollView, StatusBar, View } from 'react-native';
-import { AlertsFeed } from './components/AlertsFeed';
-import { DashboardHeader } from './components/DashboardHeader';
-import { StatGrid } from './components/StatGrid';
-import { TodayWorkoutCard } from './components/TodayWorkoutCard';
-import { WeeklyTracker } from './components/WeeklyTracker';
+import React from "react";
+import { ScrollView, StatusBar, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AlertsFeed } from "./components/AlertsFeed";
+import { DashboardHeader } from "./components/DashboardHeader";
+import { StatGrid } from "./components/StatGrid";
+import { TodayWorkoutCard } from "./components/TodayWorkoutCard";
+import { WeeklyTracker } from "./components/WeeklyTracker";
 import {
   MOCK_ALERTS,
   MOCK_STATS,
   MOCK_TODAY_WORKOUT,
   MOCK_WEEK_DAYS,
-} from './mock';
-import { styles } from './styles';
+} from "./mock";
+import { styles } from "./styles";
+import { RootStackParamList } from "../../../../types/navigation";
+import { mockWorkout } from "../../../workout/mockData";
 
-const TRAINED_COUNT = MOCK_WEEK_DAYS.filter(d => d.status === 'trained').length;
-const MISSED_COUNT = MOCK_WEEK_DAYS.filter(d => d.status === 'missed').length;
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Home">;
+
+const TRAINED_COUNT = MOCK_WEEK_DAYS.filter(
+  (d) => d.status === "trained",
+).length;
+const MISSED_COUNT = MOCK_WEEK_DAYS.filter((d) => d.status === "missed").length;
 
 export function HomeScreen(): React.JSX.Element {
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleStartWorkout = () => {
+    navigation.navigate("WorkoutExecution", { workout: mockWorkout });
+  };
+
   return (
     <View style={styles.root}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
 
       <View style={styles.bgOrb} pointerEvents="none" />
 
@@ -39,7 +57,10 @@ export function HomeScreen(): React.JSX.Element {
           missedCount={MISSED_COUNT}
         />
 
-        <TodayWorkoutCard workout={MOCK_TODAY_WORKOUT} />
+        <TodayWorkoutCard
+          workout={MOCK_TODAY_WORKOUT}
+          onStartPress={handleStartWorkout}
+        />
 
         <StatGrid stats={MOCK_STATS} />
 

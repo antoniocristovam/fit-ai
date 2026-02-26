@@ -1,36 +1,45 @@
-import React from 'react';
-import { RootStackParamList } from '../types/navigation';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { HomeScreen } from "../features/home/screens/HomeScreen";
+import {
+  WorkoutExecutionScreen,
+  WorkoutCompleteScreen,
+} from "../features/workout/screens";
+import { RootStackParamList } from "../types/navigation";
+import { Colors } from "../styles/colors";
 
-/**
- * Install: npx expo install @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context
- *
- * Uncomment and configure after installing:
- *
- * import { NavigationContainer } from '@react-navigation/native';
- * import { createNativeStackNavigator } from '@react-navigation/native-stack';
- * import { AuthNavigator } from './AuthNavigator';
- * import { AppNavigator } from './AppNavigator';
- *
- * const Stack = createNativeStackNavigator<RootStackParamList>();
- *
- * export function RootNavigator(): React.JSX.Element {
- *   const isAuthenticated = false; // replace with auth state
- *   return (
- *     <NavigationContainer>
- *       <Stack.Navigator screenOptions={{ headerShown: false }}>
- *         {isAuthenticated ? (
- *           <Stack.Screen name="App" component={AppNavigator} />
- *         ) : (
- *           <Stack.Screen name="Auth" component={AuthNavigator} />
- *         )}
- *       </Stack.Navigator>
- *     </NavigationContainer>
- *   );
- * }
- */
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator(): React.JSX.Element {
-  return <></>;
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: Colors.background.primary },
+          animation: "slide_from_right",
+        }}
+      >
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="WorkoutExecution"
+          component={WorkoutExecutionScreen}
+          options={{
+            gestureEnabled: false, // Previne swipe back durante treino
+          }}
+        />
+        <Stack.Screen
+          name="WorkoutComplete"
+          component={WorkoutCompleteScreen}
+          options={{
+            gestureEnabled: false,
+            animation: "fade",
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 export type { RootStackParamList };

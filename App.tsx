@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { HomeScreen } from './src/features/home/screens/HomeScreen';
+import * as React from "react";
+import { RootNavigator } from "./src/navigation";
 
 export default function App(): React.JSX.Element {
-  return <HomeScreen />;
+  return <RootNavigator />;
 }
