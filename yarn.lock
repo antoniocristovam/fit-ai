@@ -3269,17 +3269,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-video@npm:^55.0.9":
-  version: 55.0.9
-  resolution: "expo-video@npm:55.0.9"
-  peerDependencies:
-    expo: "*"
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/8e38a9197040578a5f9c3bab93b767bfbf5d0d82c256e126824769d3ff52c3ab30587c2cfb9dca7c8f582a59df3aee6dfbdc09124f4a259975876dfa17b9d530
-  languageName: node
-  linkType: hard
-
 "expo@npm:~54.0.33":
   version: 54.0.33
   resolution: "expo@npm:54.0.33"
@@ -4680,7 +4669,6 @@ __metadata:
     "@types/react": "npm:~19.1.0"
     expo: "npm:~54.0.33"
     expo-status-bar: "npm:~3.0.9"
-    expo-video: "npm:^55.0.9"
     react: "npm:19.1.0"
     react-native: "npm:0.81.5"
     react-native-safe-area-context: "npm:^5.7.0"
